@@ -1,0 +1,22 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+
+stages:
+  - test
+  - build
+
+
+test_job:
+  stage: test
+  image: node:4.2.2
+  script:
+    - npm install
+    - npm run test
+
+build_job:
+  stage: build
+  script:
+    - docker build -t test .

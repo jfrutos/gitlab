@@ -1,0 +1,4 @@
+FROM sameersbn/gitlab:10.2.2
+MAINTAINER JAFB <jfrutos@gmail.com>
+
+COPY ./certs/* /certs/

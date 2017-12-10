@@ -1,0 +1,17 @@
+concurrent = 1
+check_interval = 0
+
+[[runners]]
+  name = "9d50d3e6793a"
+  url = "http://gitlab"
+  token = "e40b8d5cfb6e34bbc64d09adf7dfb2"
+  executor = "docker"
+  [runners.docker]
+    tls_verify = false
+    image = "node:4.2.2"
+    privileged = true
+    disable_cache = false
+    volumes = ["/cache"]
+    extra_hosts = ["gitlab:192.168.99.100"]
+    shm_size = 0
+  [runners.cache]

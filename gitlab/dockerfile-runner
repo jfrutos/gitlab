@@ -1,0 +1,4 @@
+FROM gitlab/gitlab-runner:alpine-v10.2.0
+MAINTAINER JAFB <jfrutos@gmail.com>
+
+COPY ./config-runner/* /etc/gitlab-runner

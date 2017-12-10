@@ -1,0 +1,5 @@
+FROM jordanjennings/portus:head-working
+MAINTAINER JAFB <jfrutos@gmail.com>
+
+
+COPY ./secrets/* /certificates/
