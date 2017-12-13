@@ -1,0 +1,41 @@
+#!/bin/sh
+
+export CI_BUILD_SHA="x${CI_BUILD_REF:0:8}"
+
+# Automatically login docker
+docker() {
+	if [ ! -e ~/.docker/config.json ]; then
+		command docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry
+	fi
+	command docker "$@"
+}
+
+# Automatically install docker-cloud
+docker_cloud() {
+	if ! which docker-cloud >/dev/null 2>/dev/null; then
+		# Install Docker Cloud
+		apk --update add python py-pip >/dev/null
+		pip install docker-cloud >/dev/null
+	fi
+
+	command docker-cloud "$@"
+}
+
+docker_build_push() {
+	echo Building docker image...
+	docker build --pull -t $CI_REGISTRY_IMAGE:$1 .
+
+	echo Pushing docker image...
+	docker push $CI_REGISTRY_IMAGE:$1
+}
+
+docker_tag_push() {
+	echo Pulling docker image...
+	docker pull $CI_REGISTRY_IMAGE:$1 >/dev/null
+
+	echo Tagging docker image...
+	docker tag $CI_REGISTRY_IMAGE:$1 $CI_REGISTRY_IMAGE:$2
+
+	echo Pushing docker image...
+	docker push $CI_REGISTRY_IMAGE:$2
+}

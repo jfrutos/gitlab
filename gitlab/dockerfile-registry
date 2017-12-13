@@ -1,0 +1,7 @@
+FROM registry:2.6.2
+MAINTAINER JAFB <jfrutos@gmail.com>
+
+COPY ./registry/config.yml /etc/docker/registry/config.yml
+COPY ./certs/wildcard.crt /certs/
+COPY ./certs/wildcard.key /certs/
+COPY ./registry/init /etc/docker/registry/init

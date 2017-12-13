@@ -109,7 +109,6 @@ services:
     volumes:
       - static:/srv/Portus/public:ro
     ports:
-      - 80:80
       - 443:443
     links:
       - registry:registry

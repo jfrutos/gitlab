@@ -8,10 +8,13 @@ stages:
   - test
   - build
 
+before_script:
+  - source ci/prepare
+
 
 test_job:
   stage: test
-  image: node:4.2.2
+  image: jfrutos/nodebuild:latest
   script:
     - npm install
     - npm run test
@@ -19,4 +22,5 @@ test_job:
 build_job:
   stage: build
   script:
-    - docker build -t test .
+    - docker info
+    - docker_build_push $CI_BUILD_SHA

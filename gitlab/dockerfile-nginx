@@ -1,0 +1,5 @@
+FROM library/nginx:alpine
+MAINTAINER JAFB <jfrutos@gmail.com>
+
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./certs/* /secrets/

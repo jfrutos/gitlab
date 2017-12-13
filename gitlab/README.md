@@ -1,5 +1,9 @@
 Gitlab custom instalation.
 
+
+RUNNER: https://hub.docker.com/r/sameersbn/gitlab-ci-multi-runner/#trusting-ssl-server-certificates
+
+
 En este proyecto hemos montado un gitlab con las siguientes características:
     - Gitlab completo (repositorio + CI/CD + runner)
     - BBDD postgresql.
@@ -16,14 +20,15 @@ Artículo para aplicación: https://blog.lwolf.org/post/how-to-build-tiny-golang
 
 
 Artículo base para registro: https://blog.irontec.com/montando-un-docker-registry-como-dios-manda/
-
+https://github.com/sameersbn/docker-gitlab/blob/master/docs/container_registry.md
 
 URL apoyo:
 https://stackoverflow.com/questions/47253978/auto-register-gitlab-runner
 https://blog.lwolf.org/post/fully-automated-gitlab-installation-on-kubernetes-including-runner-and-registry/#runner
 https://gitlab.com/gitlab-examples
 
-
+Importante para variables de entorno de gitlab:
+https://github.com/sameersbn/docker-gitlab/blob/master/assets/runtime/env-defaults
 
 Importante:  
   - El runner es capaz de levantar dockers con una imagen para compilar o hacer
