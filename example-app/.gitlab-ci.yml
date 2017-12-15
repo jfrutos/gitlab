@@ -1,7 +1,10 @@
-image: docker:latest
 
-services:
-  - docker:dind
+
+# Parece que sin este servicio se puede crear el docker y registrarlo.
+# Es maś, si se mete este servicio falla. Posiblemente este servicio sea necesario
+# para cuando el runner no sea un docker.
+# services:
+#   - docker:dind
 
 
 stages:
@@ -11,16 +14,15 @@ stages:
 before_script:
   - source ci/prepare
 
-
 test_job:
   stage: test
-  image: jfrutos/nodebuild:latest
+  image: node:4.4.2
   script:
-    - npm install
-    - npm run test
+   - npm install
+   - npm run test
 
 build_job:
   stage: build
+  image: docker:latest
   script:
-    - docker info
     - docker_build_push $CI_BUILD_SHA

@@ -2,10 +2,18 @@
 
 export CI_BUILD_SHA="x${CI_BUILD_REF:0:8}"
 
+docker_hola()
+{
+	echo "Hola"
+	ping -c 3 registry.shl.com
+
+
+}
 # Automatically login docker
 docker() {
+
 	if [ ! -e ~/.docker/config.json ]; then
-		command docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry
+		command docker login -u gitlab-ci-token -p  $CI_JOB_TOKEN  registry.shl.com
 	fi
 	command docker "$@"
 }

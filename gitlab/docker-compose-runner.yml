@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  runner:
+    #restart: always
+    build:
+      context: ./
+      dockerfile: dockerfile-runner
+    environment:
+      - REGISTER_NON_INTERACTIVE=true
+      - CI_SERVER_URL=https://${GITLAB_FQDN}
+      - RUNNER_name="THE RUNNER_name"
+      - REGISTRATION_TOKEN=${RUNNER_REGISTRATION_TOKEN}
+      - RUNNER_EXECUTOR=docker
+      - RUNNER_PRE_CLONE_SCRIPT=git config --global http.sslVerify false
+      - DOCKER_TLS_VERIFY=false
+      - DOCKER_IMAGE=docker:latest
+      - DOCKER_PRIVILEGED=true
+      - DOCKER_VOLUMES=/var/run/docker.sock:/var/run/docker.sock
+      - DOCKER_EXTRA_HOSTS="[registry.shl.com:192.168.0.10,gitlag.shl.com:192.168.0.10]
+      - DOCKER_DISABLE_CACHE=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "registry.shl.com:${EXTERNAL_IP}"
+      - "gitlab.shl.com:${EXTERNAL_IP}"

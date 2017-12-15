@@ -1,12 +1,5 @@
-FROM node:4.2.2
+FROM docker:dind
 MAINTAINER JAFB <jfrutos@gmail.com>
 
 
-COPY ./certs/wildcard.crt /etc/ssl/certs/wildcard.crt
-
-RUN cat /etc/ssl/certs/wildcard.crt >>  /etc/ssl/certs/ca-certificates.crt
-
-RUN update-ca-certificates
-
-
-RUN git  config --global  http.sslCAInfo /etc/ssl/certs/wildcard.crt
+RUN echo "192.168.0.10 registry.shl.com" >>/etc/hosts

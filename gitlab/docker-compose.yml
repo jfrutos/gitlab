@@ -7,7 +7,7 @@ services:
     command:
     - --loglevel warning
     volumes:
-    - redis:/var/lib/redis:Z
+    - redis:/var/lib/redis
 
 
   postgresql:
@@ -29,9 +29,6 @@ services:
     depends_on:
     - redis
     - postgresql
-    # ports:
-    # - "8080:80"
-    # - "10022:22"
     volumes:
     - gitlab-data:/home/git/data
     - registry-data:/home/git/data/shared/registry
@@ -56,7 +53,7 @@ services:
 
       ## REGISTRY
     - GITLAB_REGISTRY_ENABLED=true
-    - GITLAB_REGISTRY_HOST=registry.shl.com
+    - GITLAB_REGISTRY_HOST=${REGISTRY_FQDN}
     - GITLAB_REGISTRY_PORT=443
     - GITLAB_REGISTRY_API_URL=http://registry:5000/
     - GITLAB_REGISTRY_KEY_PATH=/certs/wildcard.key
@@ -64,19 +61,19 @@ services:
 
       ## SSL
     - SSL_SELF_SIGNED=true
-    - SSL_CERTIFICATE_PATH=/certs/wildcarf.crt
+    - SSL_CERTIFICATE_PATH=/certs/wildcard.crt
     - SSL_KEY_PATH=/certs/wildcard.key
     - SSL_VERIFY_CLIENT=off
 
 
-    - GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN=Xgjnx3jt493bJWcJWKWf3fLpFKbkwLFThCHzvxvXNxtdszCRMVgzfMjHjwhXFj9q # <-------
+    - GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN=${RUNNER_REGISTRATION_TOKEN} # <-------
     - GITLAB_HOST=${GITLAB_FQDN}
-    - GITLAB_PORT=443
+    - GITLAB_PORT=${GITLAB_PORT}
     - GITLAB_SSH_PORT=10022
     - GITLAB_RELATIVE_URL_ROOT=
-    - GITLAB_SECRETS_DB_KEY_BASE=3wrV4km3vHLgfCXVbqgN9pnpqHwKkvLH4dcJddncCdwnVzmwCNT3vzcxHRjCVsrp # <------
-    - GITLAB_SECRETS_SECRET_KEY_BASE=rMRvwNgXTCMqwT4zsxffFcfLc4444HLp7R7LLhCkXhM9nHghqPXbPMLCVNHWtWhq # <------
-    - GITLAB_SECRETS_OTP_KEY_BASE=j3CNxKWc34FcmfXmqnXrq4qcLKcTvXPWRn7kfJhXfTh4VXH47CpHWdWq9qmWfJFh # <------
+    - GITLAB_SECRETS_DB_KEY_BASE=${DATABASE_PASSWORD} # <------
+    - GITLAB_SECRETS_SECRET_KEY_BASE=${SECRET_KEY_BASE} # <------
+    - GITLAB_SECRETS_OTP_KEY_BASE=${GITLAB_SECRETS_OTP_KEY_BASE} # <------
 
     - GITLAB_ROOT_PASSWORD=
     - GITLAB_ROOT_EMAIL=
@@ -168,30 +165,8 @@ services:
     - OAUTH_AZURE_API_KEY=
     - OAUTH_AZURE_API_SECRET=
     - OAUTH_AZURE_TENANT_ID=
-    external_links:
-    - "registry.shl.com:192.168.0.10"
 
-  runner:
-    #restart: always
-    build:
-      context: ./
-      dockerfile: dockerfile-runner
-    environment:
-      - REGISTRATION_TOKEN=Xgjnx3jt493bJWcJWKWf3fLpFKbkwLFThCHzvxvXNxtdszCRMVgzfMjHjwhXFj9q
-      - CI_SERVER_URL=http://gitlab.shl.com
-      - RUNNER_TOKEN=Xgjnx3jt493bJWcJWKWf3fLpFKbkwLFThCHzvxvXNxtdszCRMVgzfMjHjwhXFj9q
-      - RUNNER_DESCRIPTION="The runner"
-      - RUNNER_EXECUTOR=docker
-      - CA_CERTIFICATES_PATH=/certs
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - runner-data:/home/gitlab_ci_multi_runner/data
-    extra_hosts:
-      - "registry.shl.com:192.168.0.10"
-      - "gitlab.shl.com:192.168.0.10"
-    depends_on:
-      - registry
-      - gitlab
+
 
   registry:
     build:
@@ -199,7 +174,7 @@ services:
       dockerfile: dockerfile-registry
     command: ["/bin/sh", "/etc/docker/registry/init"]
     environment:
-      - REGISTRY_LOG_LEVEL=debug
+      - REGISTRY_LOG_LEVEL=warning
       # Authentication
       - REGISTRY_AUTH_TOKEN_REALM=https://${GITLAB_FQDN}/jwt/auth
       - REGISTRY_AUTH_TOKEN_SERVICE=container_registry
@@ -218,8 +193,8 @@ services:
     ports:
       - 5000:5000
       - 5001:5001 # required to access debug service
-    extra_hosts:
-      - "registry.shl.com:${EXTERNAL_IP}"
+  #  extra_hosts:
+  #    - "registry.shl.com:${EXTERNAL_IP}"
 
 
   nginx:

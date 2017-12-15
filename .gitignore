@@ -1,2 +1,3 @@
-registry/secrets/*
 gitlab/certs/*
+.env
+example-app/*

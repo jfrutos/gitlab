@@ -1,6 +1,10 @@
-FROM gitlab/gitlab-runner:v10.2.0
+FROM gitlab/gitlab-runner:alpine-v10.2.0
 MAINTAINER JAFB <jfrutos@gmail.com>
 
 COPY ./config-runner/* /etc/gitlab-runner
 
-COPY ./certs/wildcard.crt /certs/ca.crt
+COPY ./certs/wildcard.crt /etc/gitlab-runner/certs/gitlab.shl.com.crt
+
+RUN  echo /etc/gitlab-runner/certs/gitlab.shl.com.crt /certs/ca.crt
+
+#CMD ["gitlab-runner","register"]

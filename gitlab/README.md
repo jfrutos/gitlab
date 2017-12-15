@@ -19,6 +19,8 @@ Artículo base para gitlab: https://github.com/sameersbn/docker-gitlab
 Artículo para aplicación: https://blog.lwolf.org/post/how-to-build-tiny-golang-docker-images-with-gitlab-ci/
 
 
+Para el tema de registro y dokcers: https://docs.gitlab.com/ce/ci/docker/using_docker_images.html#define-an-image-from-a-private-docker-registry
+
 Artículo base para registro: https://blog.irontec.com/montando-un-docker-registry-como-dios-manda/
 https://github.com/sameersbn/docker-gitlab/blob/master/docs/container_registry.md
 
